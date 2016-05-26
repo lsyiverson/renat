@@ -5,16 +5,22 @@ import {View, StyleSheet, Image, Text} from 'react-native';
 
 export default class UserCard extends Component {
   render() {
+    const {user} = this.props;
     return (
       <View style={[styles.card, styles.shadow]}>
         <Image
           style={styles.avatar}
-          source={{uri: 'http://www.people.com.cn/mediafile/pic/20101103/9/1550245162796501193.jpg'}}
-          />
+          source={{uri: user.photo}}
+        />
         <View style={styles.textWrapper}>
-          <Text style={styles.name}>liwen zhang</Text>
-          <Text style={styles.job}>Dev on sun</Text>
-          <Text style={styles.email}>lwzhang@thoughtworks.com</Text>
+          <View style={styles.nameAndOffice}>
+            <Text style={styles.name}>{user.name}</Text>
+            <View style={styles.officeWrapper}>
+              <Text style={styles.office}>{user.office}</Text>
+            </View>
+          </View>
+          <Text style={styles.job}>{user.title} on {user.project}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
       </View>
     )
@@ -63,6 +69,22 @@ const styles = StyleSheet.create({
       height: 2
     },
     shadowRadius: 2
+  },
+  nameAndOffice: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  office: {
+    backgroundColor: '#F50057',
+    color: 'white',
+    borderRadius: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 3,
+    paddingBottom: 3,
+  },
+  officeWrapper: {
+    marginLeft: 5
   }
 });
 
