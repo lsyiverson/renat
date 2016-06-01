@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "semi": [
+      "warn",
+      "never"
+    ],
+    "comma-dangle": [
+      "warn",
+      "never"
+    ],
+    "eol-last": "off",
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": "off"
+  }
+}
