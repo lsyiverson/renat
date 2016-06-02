@@ -3,9 +3,10 @@
 import React, {Component} from 'react';
 import {View, StatusBar, StyleSheet, ListView} from 'react-native';
 import {connect} from 'react-redux';
+import FilterPanel from './components/Filter';
 import NavBar from './components/NavBar';
 import UserCard from './components/UserCard';
-import {userListAction} from './actions/userListAction';
+import {userListAction, userFilterAction} from './actions/userListAction';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,10 +27,17 @@ class App extends Component {
   }
   
   render() {
-    const ds = this.dataSource.cloneWithRows(this.props.userList);
+    const {userList, filter, filterUser} = this.props;
+
+    const data = filter === '' ? userList : userList.filter((user)=> {
+      return user.office == filter;
+    });
+
+    const ds = this.dataSource.cloneWithRows(data);
     return (
       <View style={styles.container}>
         <NavBar />
+        <FilterPanel action={filterUser} />
         <ListView
           enableEmptySections
           dataSource={ds}
@@ -41,13 +49,15 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    userList: state
+    userList: state.userList,
+    filter: state.filter
   }
 }
 
 function mapDispatch(dispatch) {
   return {
-    fetchUser: ()=> dispatch(userListAction())
+    fetchUser: ()=> dispatch(userListAction()),
+    filterUser: filter=> dispatch(userFilterAction(filter))
   }
 }
 

@@ -1,6 +1,6 @@
-import {createStore, compose, applyMiddleware} from 'redux';
+import {createStore, compose, applyMiddleware, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
-import {userListReducer} from '../reducers/userListReducer';
+import {userListReducer, userFilterReducer} from '../reducers/userListReducer';
 
 const promiseMiddleware = ()=> (next) => (action) => {
   if(typeof action.then === 'function') {
@@ -9,4 +9,7 @@ const promiseMiddleware = ()=> (next) => (action) => {
   return next(action);
 };
 
-export default createStore(userListReducer, compose(applyMiddleware(thunk)));
+export default createStore(combineReducers({
+  userList: userListReducer,
+  filter: userFilterReducer
+}), compose(applyMiddleware(thunk)));
