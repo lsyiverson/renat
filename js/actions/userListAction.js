@@ -26,9 +26,22 @@ const mockUserList = [
 ];
 
 export const FETCH_USER = 'FETCH_USER';
-export function userListAction(data = mockUserList) {
-  return {
-    type: FETCH_USER,
-    payload: data
+export function userListAction() {
+  return dispatch => {
+    fetch('http://facehub.net/api/users', {
+      headers: {
+        Cookie: 'token=Aw5k7BHAum28zDLbg3QVJE'
+      }
+    }).then(res=> {
+      if (res.ok) {
+        return res.json();
+      }
+      throw res.error();
+    }).then(json=> {
+      dispatch({
+        type: FETCH_USER,
+        payload: json.users
+      });
+    }).catch(error => console.log('request error: ', error));
   }
 }
