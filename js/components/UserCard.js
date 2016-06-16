@@ -1,28 +1,30 @@
 'use strict';
 
-import React, {Component} from 'react';
-import {View, StyleSheet, Image, Text} from 'react-native';
+import React, {Component} from "react";
+import {View, StyleSheet, Image, Text, TouchableHighlight} from "react-native";
 
 export default class UserCard extends Component {
   render() {
-    const {user} = this.props;
+    const {user, navigator} = this.props;
     return (
-      <View style={[styles.card, styles.shadow]}>
-        <Image
-          style={styles.avatar}
-          source={{uri: user.photo}}
-        />
-        <View style={styles.textWrapper}>
-          <View style={styles.nameAndOffice}>
-            <Text style={styles.name}>{user.name}</Text>
-            <View style={styles.officeWrapper}>
-              <Text style={styles.office}>{user.office}</Text>
+      <TouchableHighlight onPress={()=> {navigator.push({id: 'detail'})}}>
+        <View style={[styles.card, styles.shadow]}>
+          <Image
+            style={styles.avatar}
+            source={{uri: user.photo}}
+          />
+          <View style={styles.textWrapper}>
+            <View style={styles.nameAndOffice}>
+              <Text style={styles.name}>{user.name}</Text>
+              <View style={styles.officeWrapper}>
+                <Text style={styles.office}>{user.office}</Text>
+              </View>
             </View>
+            <Text style={styles.job}>{user.title} on {user.project}</Text>
+            <Text style={styles.email}>{user.email}</Text>
           </View>
-          <Text style={styles.job}>{user.title} on {user.project}</Text>
-          <Text style={styles.email}>{user.email}</Text>
         </View>
-      </View>
+      </TouchableHighlight>
     )
   }
 }

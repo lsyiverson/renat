@@ -1,64 +1,27 @@
 'use strict';
 
-import React, {Component} from 'react';
-import {View, StatusBar, StyleSheet, ListView} from 'react-native';
-import {connect} from 'react-redux';
-import FilterPanel from './components/Filter';
-import NavBar from './components/NavBar';
-import UserCard from './components/UserCard';
-import {userListAction, userFilterAction} from './actions/userListAction';
+import React, {Component} from "react";
+import {Navigator} from "react-native";
+import HomePage from "./pages/HomePage";
+import DetailPage from "./pages/DetailPage";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#EEEEEE'
-  }
-});
-
-class App extends Component {
-  constructor() {
-    super();
-    StatusBar.setBarStyle('light-content');
-    this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2)=> r1 !== r2});
-  }
-
-  componentWillMount() {
-    this.props.fetchUser();
-  }
-  
-  render() {
-    const {userList, filter, filterUser} = this.props;
-
-    const data = filter === '' ? userList : userList.filter((user)=> {
-      return user.office == filter;
-    });
-
-    const ds = this.dataSource.cloneWithRows(data);
-    return (
-      <View style={styles.container}>
-        <NavBar />
-        <FilterPanel action={filterUser} />
-        <ListView
-          enableEmptySections
-          dataSource={ds}
-          renderRow={user => <UserCard user={user}/>}/>
-      </View>
-    )
-  }
+function App() {
+  return (
+    <Navigator
+      initialRoute={{id: 'home'}}
+      renderScene={(route, navigator) => {
+      switch(route.id){
+        case 'home':
+          return <HomePage navigator={navigator}/>;
+        case 'detail':
+          return <DetailPage navigator={navigator}/>;
+        default:
+          return <HomePage />;
+      }
+      }
+      }
+    />
+  )
 }
 
-function mapStateToProps(state) {
-  return {
-    userList: state.userList,
-    filter: state.filter
-  }
-}
-
-function mapDispatch(dispatch) {
-  return {
-    fetchUser: ()=> dispatch(userListAction()),
-    filterUser: filter=> dispatch(userFilterAction(filter))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatch)(App);
+export default App;
